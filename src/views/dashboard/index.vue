@@ -71,7 +71,7 @@
                   <div class="el-font-size">
                     <span>产品名称</span>
                     <el-divider direction="vertical"/>
-                    <span><el-tag>zuihou-admin-cloud微服务SaaS脚手架</el-tag></span>
+                    <span><el-tag>zuihou-admin-cloud SaaS型微服务快速开发平台</el-tag></span>
                     <el-divider direction="vertical"/>
                     <span style="color:red">立即去<a href="https://github.com/zuihou/zuihou-admin-cloud" target="_blank">点个star</a>吧~</span>
                     <el-divider content-position="right"><i class="el-icon-star-off"/></el-divider>
@@ -119,7 +119,7 @@
                             onclick="window.open('https://github.com/zuihou/')">github</el-tag>
                     <el-divider direction="vertical"/>
                     <el-tag type="danger" effect="dark" style="cursor: pointer"
-                            @click="$message({ message: '待完善', type: 'success'})">增强商业版</el-tag>
+                            onclick="window.open('https://www.kancloud.cn/zuihou/zuihou-admin-cloud/1620904/')">增强商业版</el-tag>
                     </span>
                   </div>
                 </el-card>

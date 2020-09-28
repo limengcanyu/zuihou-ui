@@ -51,9 +51,6 @@
           <el-dropdown-item @click.native="batchDelete" v-has-permission="['user:delete']">
             {{ $t("table.delete") }}
           </el-dropdown-item>
-          <el-dropdown-item @click.native="resetPassword" v-has-permission="['user:reset']">
-            {{ $t("table.resetPassword") }}
-          </el-dropdown-item>
           <el-dropdown-item @click.native="exportExcel" v-has-permission="['user:export']">
             {{ $t("table.export") }}
           </el-dropdown-item>
@@ -234,7 +231,7 @@
         align="center"
         column-key="operation"
         class-name="small-padding fixed-width"
-        width="100px"
+        width="130px"
       >
         <template slot-scope="{ row }">
           <i
@@ -254,6 +251,12 @@
             class="el-icon-delete table-operation"
             style="color: #f50;"
             v-hasPermission="['user:delete']"
+          />
+          <i
+            @click="updatePassword(row)"
+            class="el-icon-refresh-left"
+            style="color: #f50;"
+            v-hasPermission="['user:update']"
           />
           <el-link
             class="no-perm"
@@ -278,27 +281,36 @@
       @success="editSuccess"
       ref="edit"
     />
+    <update-password
+      :dialog-visible="updatePasswordDialog.isVisible"
+      :type="updatePasswordDialog.type"
+      @close="updatePasswordClose"
+      @success="updatePasswordSuccess"
+      ref="editPassword"
+    />
     <user-view
       :dialog-visible="userViewVisible"
       @close="viewClose"
       ref="view"
     />
     <file-import
+      ref="import"
       :dialog-visible="fileImport.isVisible"
-      :type="fileImport.type" :exportErrorUrl="fileImport.exportErrorUrl"
-      :action="fileImport.action" accept=".xls,.xlsx"
+      :type="fileImport.type"
+      :exportErrorUrl="fileImport.exportErrorUrl"
+      :action="fileImport.action"
+      accept=".xls,.xlsx"
       @close="importClose"
       @success="importSuccess"
-      ref="import"
     />
     <el-dialog
+      v-el-drag-dialog
       :close-on-click-modal="false"
       :close-on-press-escape="true"
       title="预览"
       width="80%"
       top="50px"
       :visible.sync="preview.isVisible"
-      v-el-drag-dialog
     >
       <el-scrollbar>
         <div v-html="preview.context"></div>
@@ -314,6 +326,7 @@
   import elDragDialog from '@/directive/el-drag-dialog'
   import FileImport from "@/components/zuihou/Import"
   import UserEdit from "./Edit";
+  import UpdatePassword from "./UpdatePassword";
   import UserView from "./View";
   import userApi from "@/api/User.js";
   import orgApi from "@/api/Org.js";
@@ -323,7 +336,7 @@
   export default {
     name: "UserManage",
     directives: { elDragDialog },
-    components: { Pagination, UserEdit, UserView, Treeselect, FileImport },
+    components: { Pagination, UserEdit, UserView, Treeselect, FileImport, UpdatePassword },
     filters: {
       userAvatarFilter(name) {
         return name.charAt(0);
@@ -348,6 +361,10 @@
       return {
         orgList: [],
         dialog: {
+          isVisible: false,
+          type: "add"
+        },
+        updatePasswordDialog: {
           isVisible: false,
           type: "add"
         },
@@ -457,6 +474,12 @@
       editSuccess() {
         this.search();
       },
+      updatePasswordSuccess() {
+        this.search();
+      },
+      updatePasswordClose() {
+        this.updatePasswordDialog.isVisible = false;
+      },
       onSelectChange(selection) {
         this.selection = selection;
       },
@@ -528,43 +551,6 @@
       importClose() {
         this.fileImport.isVisible = false;
       },
-      resetPassword() {
-        if (!this.selection.length) {
-          this.$message({
-            message: this.$t("tips.noDataSelected"),
-            type: "warning"
-          });
-          return;
-        }
-        this.$confirm(
-          this.$t("tips.confirmRestPassword"),
-          this.$t("common.tips"),
-          {
-            confirmButtonText: this.$t("common.confirm"),
-            cancelButtonText: this.$t("common.cancel"),
-            type: "warning"
-          }
-        )
-          .then(() => {
-            const ids = [];
-            this.selection.forEach(u => {
-              ids.push(u.id);
-            });
-            userApi.reset({ids: ids}).then(response => {
-              const res = response.data;
-              if (res.isSuccess) {
-                this.$message({
-                  message: this.$t("tips.resetPasswordSuccess"),
-                  type: "success"
-                });
-              }
-              this.clearSelections();
-            });
-          })
-          .catch(() => {
-            this.clearSelections();
-          });
-      },
       singleDelete(row) {
         this.$refs.table.clearSelection()
         this.$refs.table.toggleRowSelection(row, true);
@@ -635,6 +621,11 @@
         this.$refs.edit.setUser(row, this.orgList, this.dicts, this.enums);
         this.dialog.type = "edit";
         this.dialog.isVisible = true;
+      },
+      updatePassword(row) {
+        this.$refs.editPassword.setUser(row);
+        this.updatePasswordDialog.type = "edit";
+        this.updatePasswordDialog.isVisible = true;
       },
       fetch(params = {}) {
         this.loading = true;

@@ -32,6 +32,26 @@ export default {
     github: '项目地址'
   },
   table: {
+    blockList: {
+      id: 'ID',
+      ip: '阻止访问ip',
+      requestUri: '请求URI',
+      requestMethod: '请求方法',
+      limitStart: '限制时间起',
+      limitEnd: '限制时间止',
+      status: '状态',
+      location: '位置',
+    },
+    rateLimiter: {
+      id: 'ID',
+      count: '次数',
+      requestUri: '请求URI',
+      requestMethod: '请求方法',
+      limitStart: '限制时间起',
+      limitEnd: '限制时间止',
+      status: '状态',
+      intervalSec: '时间窗口',
+    },
     tenant: {
       code: '企业编码',
       name: '企业名称',
@@ -107,6 +127,7 @@ export default {
       abbreviation: '简称',
       describe: '描述',
       parentId: '上级ID',
+      type: '类型',
       sortValue: '排序',
       status: '状态'
     },
@@ -297,6 +318,68 @@ export default {
       field3: '字段3',
       createTime: '导入时间'
     },
+    activitiModel: {
+      id: '模型主键',
+      name: '模型名称',
+      key: '模型标识',
+      version: '版本',
+      description: '模型描述',
+      status: '发布状态',
+      createTime: '创建时间',
+      lastUpdateTime: '最后修改时间'
+    },
+    definitionModel: {
+      id: '流程主键',
+      tenantId: '租户编号',
+      name: '流程名称',
+      key: '流程标识',
+      version: '流程版本',
+      suspendStateName: '状态',
+      deploymentTime: '部署时间',
+    },
+    instantModel: {
+      id: '主键',
+      tenantId: '租户编号',
+      name: '请假人员',
+      type: '请假类型',
+      isOver: '完成状态',
+      suspendStateName: '激活状态',
+      starttime: '开始时间',
+      endtime: '结束时间',
+    },
+    instantReimbursementModel: {
+      id: '主键',
+      tenantId: '租户编号',
+      name: '报销人员',
+      type: '报销类型',
+      number: '报销金额',
+      isOver: '完成状态',
+      suspendStateName: '激活状态',
+      createTime: '申请时间',
+    },
+    ruTaskModel: {
+      id: '任务主键',
+      tenantId: '租户编号',
+      name: '当前任务名称',
+      processDefinitionName: '流程名称',
+      processDefinitionKey: '流程KEY',
+      suspendStateName: '激活状态',
+      reason: '请假原因',
+      type: '请假类型',
+      typeReimbursement: '报销类型',
+      reasonReimbursement: '报销说明',
+      startUser: '发起人',
+      startTime: '发起时间',
+      createTime: '申请时间',
+    },
+    ruTaskItemModel: {
+      id: '事项主键',
+      itemName: '事项名称',
+      itemRemake: '事项备注',
+      result: '事项结果',
+      createUser: '处理人',
+      createTime: '处理时间',
+    },
     status: '状态',
     refresh: '刷新',
     operation: '操作',
@@ -330,7 +413,7 @@ export default {
     sidebarLogo: '侧边栏 Logo'
   },
   system: {
-    title: 'zuihou-admin'
+    title: 'zuihou-admin-cloud'
   },
   tips: {
     systemError: '系统维护中，请稍微再试~',
@@ -370,7 +453,10 @@ export default {
     resetPasswordSuccess: '所选用户密码重置已被重置为123456',
     getCodeImageFailed: '获取图形验证码失败',
     tooManyRequest: '获取验证码过于频繁，请1分钟后再试',
-    clientOriginSecret: '该客户端原始密码为：'
+    clientOriginSecret: '该客户端原始密码为：',
+    publishSuccess: '发布成功',
+    confirmPublish: '确定发布流程吗?',
+    mappingSuccess: '映射成功',
   },
   rules: {
     require: '不能为空',
@@ -394,9 +480,9 @@ export default {
     invalidURL: '不是有效的URL'
   },
   common: {
-    system: '微服务SaaS脚手架',
+    system: 'SaaS型微服务快速开发平台',
     desc: {
-      a: '基于SpringBoot 2.2.5 & SpringCloud Hoxton.SR1',
+      a: '基于SpringBoot 2.2.9 & SpringCloud Hoxton.SR7',
       b: '使用Jwt自定义统一认证',
       c: '企业级设计和配置，拒绝demo项目',
       d: '前后端分离架构，提高软件开发效率',

@@ -26,7 +26,7 @@ const apiList = {
     url: `/authority/user`
   },
   reset: {
-    method: 'GET',
+    method: 'POST',
     url: `/authority/user/reset`
   },
   updatePassword: {
@@ -48,6 +48,10 @@ const apiList = {
   import: {
     method: 'POST',
     url: `/authority/user/import`
+  },
+  find: {
+    method: 'GET',
+    url: `/authority/user/findAll`
   }
 }
 
@@ -129,6 +133,12 @@ export default {
   import (data) {
     return axiosApi({
       ...apiList.import,
+      data
+    })
+  },
+  find (data) {
+    return axiosApi({
+      ...apiList.find,
       data
     })
   }

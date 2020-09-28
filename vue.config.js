@@ -48,14 +48,15 @@ module.exports = {
         target: targetUrl,
         changeOrigin: true,
         pathRewrite: {
-          // SpringCloud 项目使用这段配置
+          // zuihou-admin-cloud  项目使用这段配置
           ['^' + proxyUrl]: proxyUrl
 
-          // SpringBoot 项目 请使用以下的配置
+          // zuihou-admin-boot 项目 请使用以下的配置
           // ['^/api/oauth']: '/',
           // ['^/api/authority']: '/',
           // ['^/api/file']: '/',
           // ['^/api/msgs']: '/',
+          // ['^/api/gateway']: '/gateway',
           // ['^/api/gate']: '/',
         }
       }
