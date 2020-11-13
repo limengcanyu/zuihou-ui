@@ -58,6 +58,7 @@ module.exports = {
           // ['^/api/msgs']: '/',
           // ['^/api/gateway']: '/gateway',
           // ['^/api/gate']: '/',
+          // ['^/api/activiti']: '/',
         }
       }
     }

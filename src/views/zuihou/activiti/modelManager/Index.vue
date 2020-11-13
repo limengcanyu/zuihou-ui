@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-input
         :placeholder="$t('table.activitiModel.name')"
+        clearable
         class="filter-item search-item"
         v-model="queryParams.model.name"
       />
@@ -12,14 +13,11 @@
       <el-button @click="reset" class="filter-item" plain type="warning">
         {{ $t("table.reset") }}
       </el-button>
-    </div>
-
-
-    <div class="filter-container">
-      <el-button @click="singleAddView" class="filter-item" plain type="primary">
+      <el-button @click="singleAddView" class="filter-item" plain type="danger">
         {{ $t("table.add") }}
       </el-button>
     </div>
+
     <el-table
       :data="tableData.records"
       :key="tableKey"
@@ -29,17 +27,6 @@
       v-loading="loading"
     >
       <el-table-column align="center" type="selection" width="40px" :reserve-selection="true"/>
-      <el-table-column
-        :label="$t('table.activitiModel.id')"
-        :show-overflow-tooltip="true"
-        align="left"
-        prop="id"
-        width="350px"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
       <el-table-column
         :label="$t('table.activitiModel.name')"
         :show-overflow-tooltip="true"
@@ -95,7 +82,7 @@
         :label="$t('table.createTime')"
         align="center"
         :show-overflow-tooltip="true"
-        width="260px"
+        width="170px"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.createTime }}</span>
@@ -106,7 +93,7 @@
         align="center"
         prop="createTime"
         sortable="custom"
-        width="260px"
+        width="170px"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.lastUpdateTime }}</span>
@@ -117,7 +104,7 @@
         align="center"
         column-key="operation"
         class-name="small-padding fixed-width"
-        width="120px"
+        width="150px"
         fixed="right"
       >
         <template slot-scope="{ row }">
@@ -131,19 +118,19 @@
             title="流程发布"
             @click="singlePublish(row)"
             class="el-icon-s-promotion table-operation"
-            style="color: #f50;"
+            style="color: #00e1ff;"
           />
           <i
-            title="导出流程XML"
+            title="导出流程ZIP"
             @click="singleExport(row)"
             class="el-icon-download table-operation"
-            style="color: #f50;"
+            style="color: #59ff00;"
           />
           <i
             title="删除"
             @click="singleDelete(row)"
             class="el-icon-delete table-operation"
-            style="color: #f50;"
+            style="color: #ff0000;"
           />
         </template>
       </el-table-column>
@@ -349,7 +336,7 @@ export default {
     },
     export(row) {
       const vm = this
-      var url = `${vm.url}/api/activiti/static/exportXMLByModelId?modelId=${row.id}`;
+      var url = `/api/activiti/static/exportXMLByModelId?modelId=${row.id}`;
       window.location.href = url;
     },
     delete(row) {
@@ -372,6 +359,7 @@ export default {
     publish(row) {
       activitiApi.publishModel({modelId: row.id}).then(response => {
         const res = response.data;
+        debugger
           if (res.isSuccess) {
             this.$message({
               message: this.$t("tips.publishSuccess"),
@@ -417,5 +405,11 @@ div{
       background: rgba(0, 0, 0, 0.025);
     }
   }
+}
+
+/deep/.el-table:not(.el-table--scrollable-x) {
+    .el-table__fixed-right {
+        height: calc(100% - 1px) !important;
+    }
 }
 </style>

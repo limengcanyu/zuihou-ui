@@ -3,6 +3,7 @@
     <el-dialog
       title="模型管理"
       :fullscreen="true"
+      :modal-append-to-body="false"
       :visible.sync="editVisible"
       @close="editClose">
       <div id="editView" class="edit-view">
@@ -43,11 +44,9 @@ export default {
       this.editVisible = true
       setTimeout(function() {
         var view = document.getElementById('editView')
-        var urlPrefix = process.env.VUE_APP_DEV_REQUEST_DOMAIN_PREFIX
-        let url = `${urlPrefix}/api/activiti/static/index?modelId=${id}&tenant=${db.get('TENANT', '')}&token=Bearer ${db.get('TOKEN', '')}`
-        debugger
+        // var urlPrefix = process.env.VUE_APP_DEV_REQUEST_DOMAIN_PREFIX
+        let url = `/api/activiti/static/index?modelId=${id}&tenant=${db.get('TENANT', '')}&token=Bearer ${db.get('TOKEN', '')}`
         view.innerHTML = `<iframe width=100% id="frameNode" height=100% scrolling='no' frameborder=0 src="${url}"></iframe>`;
-
       }, 1000)
     },
     editClose() {
@@ -62,8 +61,11 @@ export default {
   height: 100%;
   position: absolute;
 }
+/deep/ .el-dialog__header {
+  padding: 10px;
+}
 /deep/ .el-dialog__body {
-    padding: 30px 0;
+    padding: 0px;
     color: #606266;
     font-size: 14px;
     word-break: break-all;
